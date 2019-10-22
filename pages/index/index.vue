@@ -4,7 +4,7 @@
 			<view class="cardBox">
 				<view 
 					class="card" 
-					:key="item.id"
+					:key="item._id"
 					@touchend="touchend" 
 					v-for="(item,index) in dataList"
 					@touchmove="touchMove"
@@ -12,7 +12,7 @@
 					:animation="animationData[index]"
 					:style="{transform:index<number?`rotate(${rotate*index}deg) scale(${ 1-(1-scale.x)*index },${ 1-(1-scale.y)*index }) skew(${skew.x*index}deg, ${skew.y*index}deg) translate(${translate.x*index}px, ${translate.y*index}px)`:`rotate(${rotate*(number-1)}deg) scale(${ 1-(1-scale.x)*(number-1) },${ 1-(1-scale.y)*(number-1) }) skew(${skew.x*(number-1)}deg, ${skew.y*(number-1)}deg) translate(${translate.x*(number-1)}px, ${translate.y*(number-1)}px)`,zIndex:index<number?`${9999-index}`:`${9999-(number-1)}`,opacity:index<number?`${ 1-(1-opacity)*index }`:`${ 1-(1-opacity)*(number-1) }`}"
 				>
-				{{item._id}}
+				{{item.id}}
 				</view>
 			</view>
 		</view>

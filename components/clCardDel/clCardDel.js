@@ -18,12 +18,11 @@ export default {
 			touchAnimation:null,
 			animationData:{}, 
 			dataList:[],
-			delTime:400,
+			delTime:300,
 			cardId:0
 		}
 	},
 	created() {
-		
 		this.init()
 	},
 	async mounted() {
@@ -111,7 +110,7 @@ export default {
 				}
 				this.currentIndex ++
 				this.dataList.splice(0,1)
-				console.log(this.dataList)
+				if(this.dataList.length<=this.number) this.getData()
 			}, this.delTime)
 			
 			//其他card动画
@@ -154,24 +153,11 @@ export default {
 			}
 		},
 		dataList:{
-			immediate:true,
 			handler(newVal,oldVal){
-				// for (let item of newVal) {
-				// 	if(!item._id) item._id = this.cardId++
-				// }
-				if(typeof oldVal=='undefined'){
-					
-					for (let item of newVal) {
-						console.log(item,1111)
-						if(!item._id) item._id = this.cardId++
-					}
-				}else if(newVal.length>oldVal.length){
-					for (let item of newVal) {
-						if(!item._id) item._id = this.cardId++
-					}
+				for (let item of newVal) {
+					if(!item._id) item._id = this.cardId++
 				}
 				
-				console.log(typeof oldVal=='undefined')
 			}
 		}
 	}
