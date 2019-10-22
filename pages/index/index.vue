@@ -4,15 +4,15 @@
 			<view class="cardBox">
 				<view 
 					class="card" 
-					:key="count"
+					:key="item.id"
 					@touchend="touchend" 
-					v-for="count in list"
+					v-for="(item,index) in dataList"
 					@touchmove="touchMove"
 					@touchstart="touchStart"
-					:animation="animationData[count-currentIndex]"
-					:style="{transform:count<number?`rotate(${rotate*count}deg) scale(${ 1-(1-scale.x)*count },${ 1-(1-scale.y)*count }) skew(${skew.x*count}deg, ${skew.y*count}deg) translate(${translate.x*count}px, ${translate.y*count}px)`:`rotate(${rotate*(number-1)}deg) scale(${ 1-(1-scale.x)*(number-1) },${ 1-(1-scale.y)*(number-1) }) skew(${skew.x*(number-1)}deg, ${skew.y*(number-1)}deg) translate(${translate.x*(number-1)}px, ${translate.y*(number-1)}px)`,zIndex:count<number?`${9999-count}`:`${9999-(number-1)}`,opacity:count<number?`${ 1-(1-opacity)*count }`:`${ 1-(1-opacity)*(number-1) }`}"
+					:animation="animationData[index]"
+					:style="{transform:index<number?`rotate(${rotate*index}deg) scale(${ 1-(1-scale.x)*index },${ 1-(1-scale.y)*index }) skew(${skew.x*index}deg, ${skew.y*index}deg) translate(${translate.x*index}px, ${translate.y*index}px)`:`rotate(${rotate*(number-1)}deg) scale(${ 1-(1-scale.x)*(number-1) },${ 1-(1-scale.y)*(number-1) }) skew(${skew.x*(number-1)}deg, ${skew.y*(number-1)}deg) translate(${translate.x*(number-1)}px, ${translate.y*(number-1)}px)`,zIndex:index<number?`${9999-index}`:`${9999-(number-1)}`,opacity:index<number?`${ 1-(1-opacity)*index }`:`${ 1-(1-opacity)*(number-1) }`}"
 				>
-				{{count}}
+				{{item._id}}
 				</view>
 			</view>
 		</view>

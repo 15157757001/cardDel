@@ -4,7 +4,7 @@ export default {
 			number:2, //展示卡片数量，同时设置animationData对象
 			moveRotate:{ x:0,y:0 }, //设置位移图片旋转角度距离  card中心点 - 指向坐标
 			delMoveD: uni.getSystemInfoSync().screenHeight*2,//设置删除移动距离
-			touchMoveD: 200,//设置card移动距离,   card移动距离/touchMoveD = 其他card变化比率
+			touchMoveD: 100,//设置card移动距离,   card移动距离/touchMoveD = 其他card变化比率
 			rotate:0, //旋转deg 设置第2张卡片transform opacity
 			scale:{ x:1,y:1 }, //缩放
 			skew:{ x:0,y:0 }, //倾斜px
@@ -18,14 +18,16 @@ export default {
 			touchAnimation:null,
 			animationData:{}, 
 			dataList:[],
-			delTime:600,
-			list:[]
+			delTime:400,
+			cardId:0
 		}
 	},
 	created() {
+		
 		this.init()
 	},
 	async mounted() {
+		
 		this.createAnimation()
 		await this.getData()
 	},
@@ -102,7 +104,14 @@ export default {
 			this.delanimation.translateX(x).translateY(y).step();
 			this.animationData[0] = this.delanimation.export()
 			setTimeout(() => {
+				
+				this.animationData[0] = this.delanimation.export()
+				for (var i = 1; i < this.number; i++) {
+					this.animationData[i] = this.moveAnimation.export()
+				}
 				this.currentIndex ++
+				this.dataList.splice(0,1)
+				console.log(this.dataList)
 			}, this.delTime)
 			
 			//其他card动画
@@ -142,15 +151,27 @@ export default {
 					a[i] = {}
 					this.animationData = {...this.animationData,...a}
 				}
-				for (var i = 0; i <= 10; i++) {
-					this.list.push(i) 
-				}
 			}
 		},
-		dataList(newVal,oldVal){
-			for (let key in newVal) {
-				newVal[key]._id = key
-				newVal[key]._animationData = {}
+		dataList:{
+			immediate:true,
+			handler(newVal,oldVal){
+				// for (let item of newVal) {
+				// 	if(!item._id) item._id = this.cardId++
+				// }
+				if(typeof oldVal=='undefined'){
+					
+					for (let item of newVal) {
+						console.log(item,1111)
+						if(!item._id) item._id = this.cardId++
+					}
+				}else if(newVal.length>oldVal.length){
+					for (let item of newVal) {
+						if(!item._id) item._id = this.cardId++
+					}
+				}
+				
+				console.log(typeof oldVal=='undefined')
 			}
 		}
 	}
