@@ -28,7 +28,7 @@
 						<view class="loathe" :animation="loatheAnimation[index]">
 							<view class="iconfont icon-chacha1" :style="{fontSize:'60rpx'}"></view>
 						</view>
-						<image class="img" :src="item.src"></image>
+						<image class="img" :src="item.src" v-if="index<number"></image>
 					</view>
 					
 					<view class="bottom">
@@ -91,7 +91,7 @@
 						url: 'https://www.apiopen.top/meituApi?page=3',
 						success: (res) => {
 							let dataGroup = []
-							if(dataGroup.length<9){
+							if(dataGroup.length<20){
 								for (let item of res.data.data) {
 									dataGroup.push({
 										src:item.url,
@@ -121,18 +121,22 @@
 				this.loatheAni = uni.createAnimation({
 					duration:0
 				});
-				if(x>0){
+				console.log(x)
+				if(x>20){
 					this.loveAni.opacity( 0.3 + 0.7*ratio ).step()
 					this.loveAnimation[0] = this.loveAni.export()
 					this.loatheAni.opacity( 0 ).step()
 					this.loatheAnimation[0] = this.loatheAni.export()
-				}else if(x<0){
+				}else if(x<-20){
 					this.loveAni.opacity( 0 ).step()
 					this.loveAnimation[0] = this.loveAni.export()
 					this.loatheAni.opacity( 0.3 + 0.7*ratio ).step()
 					this.loatheAnimation[0] = this.loatheAni.export()
 				}else{
-					
+					this.loveAni.opacity( 0.3 ).step()
+					this.loveAnimation[0] = this.loveAni.export()
+					this.loatheAni.opacity( 0.3 ).step()
+					this.loatheAnimation[0] = this.loatheAni.export()
 				}
 			},
 			//触摸结束判断
