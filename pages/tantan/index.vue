@@ -50,7 +50,7 @@
 </template>
 
 <script>
-	import clCardDel from "@/components/clCardDel/clCardDel";
+	import clCardDel from "@/components/cl-cardDel/cl-cardDel";
 	export default{ 
 		mixins:[clCardDel],
 		data(){

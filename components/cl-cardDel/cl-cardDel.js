@@ -18,7 +18,7 @@ export default {
 			touchAnimation:null,
 			animationData:{}, 
 			dataList:[],
-			delTime:300,
+			delTime:200,
 			cardId:0
 		}
 	},
@@ -50,7 +50,8 @@ export default {
 			});
 			//删除动画
 			this.delanimation = uni.createAnimation({
-				duration:this.delTime
+				duration:this.delTime,
+				
 			});
 			//删除时其他card动画
 			this.endanimation = uni.createAnimation({
