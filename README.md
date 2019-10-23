@@ -30,7 +30,6 @@ mixins:[clCardDel]
 | skew | Object | { x:0,y:0 } | 第2张卡片倾斜 |
 | translate | Object | { x:0,y:0 } | 第2张卡片位移 |
 | opacity | Number | 1 | 第2张卡片透明度 |
-| download | Boolean | false | 下载状态 |
 
 ## 事件
 
