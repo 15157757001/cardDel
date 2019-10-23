@@ -91,16 +91,18 @@
 						url: 'https://www.apiopen.top/meituApi?page=3',
 						success: (res) => {
 							let dataGroup = []
-							for (let item of res.data.data) {
-								dataGroup.push({
-									src:item.url,
-									sex:Math.round(Math.random()),
-									address:'杭州(100km)',
-									name:'可爱的小姐姐',
-									constellation:'双鱼座',
-									number:10,
-									old:18
-								})
+							if(dataGroup.length<9){
+								for (let item of res.data.data) {
+									dataGroup.push({
+										src:item.url,
+										sex:Math.round(Math.random()),
+										address:'杭州(100km)',
+										name:'可爱的小姐姐',
+										constellation:'双鱼座',
+										number:10,
+										old:18
+									})
+								}
 							}
 							this.dataList = [...this.dataList,...dataGroup]
 							resolve()
@@ -109,12 +111,24 @@
 				}) 
 				return promise
 			},
-			//触摸结束判断
+			//触摸中判断
 			moveJudge(x,y,ratio){
+				//touch移动喜欢动画
+				this.loveAni = uni.createAnimation({
+					duration:0
+				});
+				//touch移动不喜欢动画
+				this.loatheAni = uni.createAnimation({
+					duration:0
+				});
 				if(x>0){
 					this.loveAni.opacity( 0.3 + 0.7*ratio ).step()
 					this.loveAnimation[0] = this.loveAni.export()
+					this.loatheAni.opacity( 0 ).step()
+					this.loatheAnimation[0] = this.loatheAni.export()
 				}else if(x<0){
+					this.loveAni.opacity( 0 ).step()
+					this.loveAnimation[0] = this.loveAni.export()
 					this.loatheAni.opacity( 0.3 + 0.7*ratio ).step()
 					this.loatheAnimation[0] = this.loatheAni.export()
 				}else{
@@ -125,6 +139,14 @@
 			endJudge(x,y){
 				if(Math.abs(x)<40){
 					this._back()
+					//touch移动喜欢动画
+					this.loveAni = uni.createAnimation({
+						duration:200
+					});
+					//touch移动不喜欢动画
+					this.loatheAni = uni.createAnimation({
+						duration:200
+					});
 					this.loveAni.opacity( 0 ).step()
 					this.loveAnimation[0] = this.loveAni.export()
 					this.loatheAni.opacity( 0 ).step()
@@ -142,6 +164,7 @@
 				}else{
 					uni.showToast({icon:'none',title:'不喜欢'})
 				}
+				console.log(this.dataList[0])
 			}
 		}
 		
