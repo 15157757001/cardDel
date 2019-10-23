@@ -62,12 +62,13 @@ export default {
 		},
 		touchMove(e) {
 			let { oldTouces } = this
-		
+			
 			
 			let newTouces = e.touches[0]
 			//平移
 			this.moveX = newTouces.clientX-oldTouces.clientX
 			this.moveY = newTouces.clientY-oldTouces.clientY
+			
 			//移动图片旋转角度
 			let angle = this.calcAngleDegrees(this.moveX- this.moveRotate.x,this.moveY- this.moveRotate.y )
 			
@@ -94,8 +95,57 @@ export default {
 				this.moveAnimation.step()
 				this.animationData[i] = this.moveAnimation.export()
 			}
+			//触摸中视图变化
+			this.moveJudge(this.moveX,this.moveY,ratio)
 		},
 		touchend(e){
+			this.endJudge(this.moveX,this.moveY)
+			
+		},
+		//触摸中判断
+		moveJudge(x,y,ratio){
+			
+		},
+		//触摸结束判断
+		endJudge(x,y){
+			this._del()
+		},
+		//返回card
+		_back(){
+			//移动图片旋转角度
+			let angle = this.calcAngleDegrees(this.moveX- this.moveRotate.x,this.moveY- this.moveRotate.y )
+			//移动card动画
+			this.delanimation.translateX(-this.moveX/2).translateY(-this.moveY/2).rotate(0).step();
+			this.delanimation.translateX(0).translateY(0).rotate(0).step();
+			this.animationData[0] = this.delanimation.export()
+			setTimeout(() => {
+				//清除动画
+				this.animationData[0] = this.delanimation.export()
+				for (var i = 1; i < this.number; i++) {
+					this.animationData[i] = this.moveAnimation.export()
+				}
+			}, this.delTime)
+			
+			//其他card动画
+			let ratio = 0
+			
+			for (var i = 1; i < this.number; i++) {
+				
+				if(this.rotate!=0) this.endanimation.rotate( this.rotate*(i-ratio) )
+				if(this.opacity!=1) this.endanimation.opacity( 1-(1-this.opacity)*(i-ratio) )
+				if(this.scale.x!=1) this.endanimation.scaleX( 1-(1-this.scale.x)*(i-ratio) )
+				if(this.scale.y!=1) this.endanimation.scaleY( 1-(1-this.scale.y)*(i-ratio) )
+				if(this.skew.x!=0) this.endanimation.skewX( this.skew.x*(i-ratio) )
+				if(this.skew.y!=0) this.endanimation.skewY( this.skew.y*(i-ratio) )
+				if(this.translate.x!=0) this.endanimation.translateX( this.translate.x*(i-ratio) )
+				if(this.translate.y!=0) this.endanimation.translateY( this.translate.y*(i-ratio) )
+				
+				this.endanimation.step()
+				this.animationData[i] = this.endanimation.export()
+			}
+		},
+		//删除card
+		_del(){
 			//移动card动画
 			let d = this.moveX*this.moveX + this.moveY*this.moveY
 			let y = this.moveY*this.delMoveD/Math.sqrt(d)
@@ -103,12 +153,13 @@ export default {
 			this.delanimation.translateX(x).translateY(y).step();
 			this.animationData[0] = this.delanimation.export()
 			setTimeout(() => {
-				
+				//清除动画
 				this.animationData[0] = this.delanimation.export()
 				for (var i = 1; i < this.number; i++) {
 					this.animationData[i] = this.moveAnimation.export()
 				}
 				this.currentIndex ++
+				this.delCard(this.moveX,this.moveY)
 				this.dataList.splice(0,1)
 				if(this.dataList.length<=this.number) this.getData()
 			}, this.delTime)
@@ -130,7 +181,9 @@ export default {
 				this.endanimation.step()
 				this.animationData[i] = this.endanimation.export()
 			}
-			
+		},
+		delCard(){
+			console.log(this.dataList[0])
 		},
 		calcAngleDegrees(x, y) {
 			return Math.atan2(y, x) * 180 / Math.PI + 90;

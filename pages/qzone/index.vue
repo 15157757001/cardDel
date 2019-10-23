@@ -3,7 +3,7 @@
 		<view class="mask">
 			<view class="cardBox">
 				<view class="card" v-for="count in list"
-					:style="{transform:`rotate(${rotate*count}deg) scale(${ 1-(1-scale.x)*count },${ 1-(1-scale.y)*count }) skew(${skew.x*count}deg, ${skew.y*count}deg) translate(${translate.x*count}px, ${translate.y*count}px)`,zIndex:9999-count,opacity:`${ 1-(1-opacity)*count }`}"
+					:style="{transform:`rotate(${rotate*count}deg) scale(${ 1-(1-scale.x)*count },${ 1-(1-scale.y)*count }) skew(${skew.x*count}deg, ${skew.y*count}deg) translate(${translate.x*count}px, ${translate.y*count}px)`,zIndex:99999-count,opacity:`${ 1-(1-opacity)*count }`}"
 					:key="count" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchend" :animation="animationData[count]">
 					
 				</view>
