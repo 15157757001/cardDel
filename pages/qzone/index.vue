@@ -2,10 +2,17 @@
 	<view class="page">
 		<view class="mask">
 			<view class="cardBox">
-				<view class="card" v-for="count in list"
-					:style="{transform:`rotate(${rotate*count}deg) scale(${ 1-(1-scale.x)*count },${ 1-(1-scale.y)*count }) skew(${skew.x*count}deg, ${skew.y*count}deg) translate(${translate.x*count}px, ${translate.y*count}px)`,zIndex:99999-count,opacity:`${ 1-(1-opacity)*count }`}"
-					:key="count" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchend" :animation="animationData[count]">
-					
+				<view 
+					class="card" 
+					:key="item._id"
+					@touchend="touchend" 
+					v-for="(item,index) in dataList"
+					@touchmove="touchMove"
+					@touchstart="touchStart"
+					:animation="animationData[index]"
+					:style="{transform:index<number?`rotate(${rotate*index}deg) scale(${ 1-(1-scale.x)*index },${ 1-(1-scale.y)*index }) skew(${skew.x*index}deg, ${skew.y*index}deg) translate(${translate.x*index}px, ${translate.y*index}px)`:`rotate(${rotate*(number-1)}deg) scale(${ 1-(1-scale.x)*(number-1) },${ 1-(1-scale.y)*(number-1) }) skew(${skew.x*(number-1)}deg, ${skew.y*(number-1)}deg) translate(${translate.x*(number-1)}px, ${translate.y*(number-1)}px)`,zIndex:`${99999-index}`,opacity:index<number?`${ 1-(1-opacity)*index }`:`${ 1-(1-opacity)*(number-1) }`}"
+				>
+				{{item.id}}
 				</view>
 			</view>
 		</view>
@@ -24,14 +31,29 @@
 		methods:{
 			//设置初始参数
 			init(){
-				this.number = 3 //card 3
+				this.number = 4 //card 4
+				
+				//设置第2张卡片transform opacity
+				
 				this.translate = { x:0,y:10 } //y下移10px
 				this.scale = { x:0.9,y:1 }, //x 缩小0.9
-				
-				this.moveRotate = { //设置位移图片旋转角度距离  card中心点 - 指向坐标
+				this.rotate = 10 //旋转deg 
+				this.skew = { x:10,y:0 }, //倾斜px
+				this.opacity = 0.7  //透明度，参数范围 0~1
+				this.moveRotate = { //设置位移图片旋转角度距离  指向坐标 - card中心点 
 					x:0,
 					y:uni.getSystemInfoSync().screenHeight ,
 				}
+			},
+			//设置获取数据
+			getData(){
+				let promise = new Promise((resolve,reject)=>{
+					for (var i = 0; i < 10; i++) {
+						this.dataList.push({id:i})
+					}
+					resolve()
+				}) 
+				return promise
 			}
 		}
 		
@@ -53,12 +75,16 @@
 		width: 600rpx;
 		height: 1000rpx;
 		.card{
-			z-index: 9999;
+			background-color: #FFFFFF;
 			position:absolute;
 			width: 600rpx;
 			height: 900rpx;
-			background-color: #70f3ff;
 			border-radius: 20rpx;
+			border: 2px solid #e9e7ef;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-size: 20px;
 		}
 	}
 	

@@ -6,12 +6,12 @@
 				"navigationBarTitleText": "uni-app"
 			}
 		},
-		{
-			"path": "pages/qzone/index",
-			"style": {
-				"navigationBarTitleText": "qq空间"
-			}
-		},
+		// {
+		// 	"path": "pages/qzone/index",
+		// 	"style": {
+		// 		"navigationBarTitleText": "qq空间"
+		// 	}
+		// },
 		{
 			"path": "pages/tantan/index",
 			"style": {
@@ -37,11 +37,11 @@
 			{
 				"pagePath": "pages/tantan/index",
 				"text": "探探"
-			},
-			{
-				"pagePath": "pages/qzone/index",
-				"text": "qq空间"
 			}
+			// {
+			// 	"pagePath": "pages/qzone/index",
+			// 	"text": "qq空间"
+			// }
 		]
 	}
 }
