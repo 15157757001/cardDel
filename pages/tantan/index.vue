@@ -91,7 +91,7 @@
 						url: 'https://www.apiopen.top/meituApi?page=3',
 						success: (res) => {
 							let dataGroup = []
-							if(dataGroup.length<20){
+							if(dataGroup.length<5){
 								for (let item of res.data.data) {
 									dataGroup.push({
 										src:item.url,
