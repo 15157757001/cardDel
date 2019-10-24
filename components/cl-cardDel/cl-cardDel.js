@@ -121,7 +121,7 @@ export default {
 			this.animationData[0] = this.delanimation.export()
 			setTimeout(() => {
 				//清除动画
-				this.animationData[0] = {}
+				this.animationData[0] = this.delanimation.export()
 				for (var i = 1; i < this.number; i++) {
 					this.animationData[i] = this.moveAnimation.export()
 				}
