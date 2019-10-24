@@ -121,10 +121,12 @@ export default {
 			this.animationData[0] = this.delanimation.export()
 			setTimeout(() => {
 				//清除动画
-				this.animationData[0] = this.delanimation.export()
+				this.animationData[0] = {}
 				for (var i = 1; i < this.number; i++) {
 					this.animationData[i] = this.moveAnimation.export()
 				}
+				this.moveX = 0
+				this.moveY = 0
 			}, this.delTime)
 			
 			//其他card动画
@@ -154,6 +156,7 @@ export default {
 			this.delanimation.translateX(x).translateY(y).step();
 			this.animationData[0] = this.delanimation.export()
 			setTimeout(() => {
+				
 				//清除动画
 				this.animationData[0] = this.delanimation.export()
 				for (var i = 1; i < this.number; i++) {
@@ -161,6 +164,8 @@ export default {
 				}
 				this.currentIndex ++
 				this.delCard(this.moveX,this.moveY)
+				this.moveX = 0
+				this.moveY = 0
 				this.dataList.splice(0,1)
 				if(this.dataList.length<=this.number) this.getData()
 			}, this.delTime)

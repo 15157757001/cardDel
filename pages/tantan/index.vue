@@ -6,6 +6,7 @@
 					class="card" 
 					:key="item._id"
 					@touchend="touchend" 
+					@tap="tapCard(item)"
 					v-for="(item,index) in dataList"
 					@touchmove="touchMove"
 					@touchstart="touchStart"
@@ -121,7 +122,7 @@
 				this.loatheAni = uni.createAnimation({
 					duration:0
 				});
-				console.log(x)
+				
 				if(x>20){
 					this.loveAni.opacity( 0.3 + 0.7*ratio ).step()
 					this.loveAnimation[0] = this.loveAni.export()
@@ -169,6 +170,9 @@
 					uni.showToast({icon:'none',title:'不喜欢'})
 				}
 				console.log(this.dataList[0])
+			},
+			tapCard(item){
+				console.log(item)
 			}
 		}
 		
