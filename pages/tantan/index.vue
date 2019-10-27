@@ -1,51 +1,63 @@
 <template>
-	<view class="page">
-		<view class="mask">
-			<view class="cardBox">
-				<view
-					class="card" 
-					:key="item._id"
-					@touchend="touchend" 
+	<view class="page" :style="{height:`${sysHeight}px`}">
+		<movable-area class="move-area" :style="{height:`${3*sysHeight}px`,width:`${3*sysWidth}px`,top:`${-sysHeight}px`,left:`${-sysWidth}px` }">
+				<movable-view
+					id="move"
+					class="move-view"
 					v-for="(item,index) in dataList"
-					@touchmove="touchMove"
-					@touchstart="touchStart"
-					:animation="animationData[index]"
-					:style="{transform:index<number?`rotate(${rotate*index}deg) scale(${ 1-(1-scale.x)*index },${ 1-(1-scale.y)*index }) skew(${skew.x*index}deg, ${skew.y*index}deg) translate(${translate.x*index}px, ${translate.y*index}px)`:`rotate(${rotate*(number-1)}deg) scale(${ 1-(1-scale.x)*(number-1) },${ 1-(1-scale.y)*(number-1) }) skew(${skew.x*(number-1)}deg, ${skew.y*(number-1)}deg) translate(${translate.x*(number-1)}px, ${translate.y*(number-1)}px)`,zIndex:`${9999-index}`,opacity:index<number?`${ 1-(1-opacity)*index }`:`${ 1-(1-opacity)*(number-1) }`}"
+					:key="item._id"
+					:style="{zIndex:`${9999-index}`}"
+					direction="all"
+					:x="item.moveX"
+					:y="item.moveY"
+					out-of-bounds
+					v-if="index<=number"
+					:disabled="index!=0"
+					:animation="item.animation"
+					@tap="tapCard(item)"
 				>
-					<view class="top">
-						<view class="img-top">
-							<view class="img-left">
-								<view class="img-number"><view class="iconfont icon-tupian1 tupian"></view> {{item.number}}</view>
-								<view class="img-zou"><view class="iconfont icon-genwozou genwozou"></view> 擦肩而过1次</view>
+					<view class="cardBox"
+						@touchend="touchend" 
+						@touchmove="touchMove"
+						@touchstart="touchStart"
+						:animation="animationData[index]"
+						:style="{transform:index<number?`rotate(${rotate*index}deg) scale(${ 1-(1-scale.x)*index },${ 1-(1-scale.y)*index }) skew(${skew.x*index}deg, ${skew.y*index}deg) translate(${translate.x*index}px, ${translate.y*index}px)`:`rotate(${rotate*(number-1)}deg) scale(${ 1-(1-scale.x)*(number-1) },${ 1-(1-scale.y)*(number-1) }) skew(${skew.x*(number-1)}deg, ${skew.y*(number-1)}deg) translate(${translate.x*(number-1)}px, ${translate.y*(number-1)}px)`,opacity:index<number?`${ 1-(1-opacity)*index }`:`${ 1-(1-opacity)*(number-1) }`}"
+						
+					>
+						<view class="top">
+							<view class="img-top">
+								<view class="img-left">
+									<view class="img-number"><view class="iconfont icon-tupian1 tupian"></view> {{item.number}}</view>
+									<view class="img-zou"><view class="iconfont icon-genwozou genwozou"></view> 擦肩而过1次</view>
+								</view>
+								<view class="img-right">
+									<view class="iconfont icon-v"></view>
+								</view>
 							</view>
-							<view class="img-right">
-								<view class="iconfont icon-v"></view>
+							<view class="love" :animation="loveAnimation[index]">
+								<view class="iconfont icon-xinaixin" :style="{fontSize:'60rpx'}"></view>
 							</view>
+							<view class="loathe" :animation="loatheAnimation[index]">
+								<view class="iconfont icon-chacha1" :style="{fontSize:'60rpx'}"></view>
+							</view>
+							<image class="img" :src="item.src" v-if="index<number"></image>
 						</view>
-						<view class="love" :animation="loveAnimation[index]">
-							<view class="iconfont icon-xinaixin" :style="{fontSize:'60rpx'}"></view>
+						
+						<view class="bottom">
+							<view class="star">
+								<view class="iconfont icon-wujiaoxing1" :style="{fontSize:'60rpx'}"></view>
+							</view>
+							<view>{{item.name}}</view>
+							<view class="labelBox">
+								<view class="label" :style="{backgroundColor:item.sex==0?'#7BD8FF':'#F3C9F5'}">
+									<view class="iconfont sex" :class="item.sex==0?'icon-male':'icon-xingbie-nv'" :style="{fontSize:'16px' }"></view> {{item.old}}</view>
+								<view class="label" :style="{backgroundColor:'#A4C742'}">{{item.constellation}}</view>
+							</view>
+							<view class="address">{{item.address}}</view>
 						</view>
-						<view class="loathe" :animation="loatheAnimation[index]">
-							<view class="iconfont icon-chacha1" :style="{fontSize:'60rpx'}"></view>
-						</view>
-						<image class="img" :src="item.src" v-if="index<number"></image>
-					</view>
-					
-					<view class="bottom">
-						<view class="star">
-							<view class="iconfont icon-wujiaoxing1" :style="{fontSize:'60rpx'}"></view>
-						</view>
-						<view>{{item.name}}</view>
-						<view class="labelBox">
-							<view class="label" :style="{backgroundColor:item.sex==0?'#7BD8FF':'#F3C9F5'}">
-								<view class="iconfont sex" :class="item.sex==0?'icon-male':'icon-xingbie-nv'" :style="{fontSize:'16px' }"></view> {{item.old}}</view>
-							<view class="label" :style="{backgroundColor:'#A4C742'}">{{item.constellation}}</view>
-						</view>
-						<view class="address">{{item.address}}</view>
-					</view>
-				</view>
-			</view>
-		</view>
+					  </view>
+				</movable-view>
+		</movable-area>
 	</view>
 </template>
 
@@ -60,6 +72,9 @@
 				loveAni:null,
 				loatheAni:null
 			}
+		},
+		onLoad() {
+			
 		},
 		async mounted() {
 			//touch移动喜欢动画
@@ -121,7 +136,7 @@
 				this.loatheAni = uni.createAnimation({
 					duration:0
 				});
-				console.log(x)
+				
 				if(x>20){
 					this.loveAni.opacity( 0.3 + 0.7*ratio ).step()
 					this.loveAnimation[0] = this.loveAni.export()
@@ -142,6 +157,7 @@
 			//触摸结束判断
 			endJudge(x,y){
 				if(Math.abs(x)<40){
+					
 					this._back()
 					//touch移动喜欢动画
 					this.loveAni = uni.createAnimation({
@@ -164,16 +180,19 @@
 			//删除card时
 			delCard(x,y){
 				if(x>0){
-					uni.showToast({icon:'none',title:'喜欢'})
+					console.log(this.dataList[0],'喜欢')
 				}else{
-					uni.showToast({icon:'none',title:'不喜欢'})
+					console.log(this.dataList[0],'不喜欢')
 				}
-				console.log(this.dataList[0])
+			},
+			tapCard(item){
+				console.log(item,"点击")
 			}
 		}
 		
 	}
 </script>
+
 
 <style lang="scss" scoped>
 	@font-face {font-family: "iconfont";
@@ -221,27 +240,33 @@
 	  content: "\e677";
 	}
 	
-	.mask{
-		position: fixed;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		left: 0;
+	.page{
+		width: 100%;
+		position: absolute;
+		overflow: hidden;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 	}
-	.cardBox{
+	.move-area{
+		position: absolute;
+	}
+	.move-view{
 		width: 600rpx;
-		height: 1000rpx;
-		.card{
-			background-color: #FFFFFF;
-			position:absolute;
-			width: 600rpx;
-			height: 900rpx;
-			border-radius: 20rpx;
-			border: 2px solid #e9e7ef;
-		}
+		height: 900rpx;
+		left: 50%;
+		top: 50%;
+		margin-left: -300rpx;
+		margin-top: -500rpx;
+	}
+	.cardBox{
+		position:relative;
+		width: 600rpx;
+		height: 900rpx;
+		background-color: #fff;
+		border-radius: 20rpx;
+		border: 2px solid #e9e7ef;
+		overflow: hidden;
 		.top{
 			width: 600rpx;
 			height: 700rpx;

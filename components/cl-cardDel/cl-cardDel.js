@@ -15,15 +15,22 @@ export default {
 			moveX:0, //记录移动值
 			moveY:0, //
 			oldTouces:{},
+			oldMove:{},
 			touchAnimation:null,
 			animationData:{}, 
 			dataList:[],
 			delTime:200,
-			cardId:0
+			cardId:0,
+			x:0,
+			y:0,
+			sysHeight:0,
+			sysWidth:0
 		}
 	},
 	created() {
 		this.init()
+		this.sysHeight = uni.getSystemInfoSync().windowHeight
+		this.sysWidth = uni.getSystemInfoSync().windowWidth
 	},
 	async mounted() {
 		
@@ -59,7 +66,9 @@ export default {
 			});
 		},
 		touchStart(e){
+		
 			this.oldTouces = e.touches[0]
+			
 		},
 		touchMove(e) {
 			let { oldTouces } = this
@@ -69,12 +78,16 @@ export default {
 			//平移
 			this.moveX = newTouces.clientX-oldTouces.clientX
 			this.moveY = newTouces.clientY-oldTouces.clientY
-			
+			this.dataList[0].moveX = this.moveX
+			this.dataList[0].moveY = this.moveY
+			this.dataList[0].animation = false
 			//移动图片旋转角度
 			let angle = this.calcAngleDegrees(this.moveX- this.moveRotate.x,this.moveY- this.moveRotate.y )
 			
 			//移动card动画
-			this.touchAnimation.translateX(this.moveX).translateY(this.moveY).rotate(angle).step();
+			//this.touchAnimation.translateX(this.moveX).translateY(this.moveY).rotate(angle).step();
+			this.touchAnimation.rotate(angle).step();
+			
 			this.animationData[0] = this.touchAnimation.export()
 			
 			//其他card动画
@@ -100,6 +113,7 @@ export default {
 			this.moveJudge(this.moveX,this.moveY,ratio)
 		},
 		touchend(e){
+			
 			this.endJudge(this.moveX,this.moveY)
 			
 		},
@@ -113,11 +127,18 @@ export default {
 		},
 		//返回card
 		_back(){
+			
+			let { oldMove } = this
 			//移动图片旋转角度
 			let angle = this.calcAngleDegrees(this.moveX- this.moveRotate.x,this.moveY- this.moveRotate.y )
 			//移动card动画
-			this.delanimation.translateX(-this.moveX/2).translateY(-this.moveY/2).rotate(0).step();
-			this.delanimation.translateX(0).translateY(0).rotate(0).step();
+			//this.delanimation.translateX(-this.moveX-this.moveX/2).translateY(-this.moveY-this.moveY/2).rotate(0).step();
+			this.moveX = 0
+			this.moveY = 0
+			this.dataList[0].moveX = 0
+			this.dataList[0].moveY = 0
+			this.dataList[0].animation = true
+			this.delanimation.translateX(this.moveX).translateY(this.moveY).rotate(0).step();
 			this.animationData[0] = this.delanimation.export()
 			setTimeout(() => {
 				//清除动画
@@ -161,6 +182,10 @@ export default {
 				}
 				this.currentIndex ++
 				this.delCard(this.moveX,this.moveY)
+				this.moveX = 0
+				this.moveY = 0
+				this.dataList[0].moveX = 0
+				this.dataList[0].moveY = 0
 				this.dataList.splice(0,1)
 				if(this.dataList.length<=this.number) this.getData()
 			}, this.delTime)
@@ -209,7 +234,13 @@ export default {
 		dataList:{
 			handler(newVal,oldVal){
 				for (let item of newVal) {
-					if(!item._id) item._id = this.cardId++
+					if(!item._id){
+						item._id = this.cardId++
+						item.moveX = 0
+						item.moveY = 0
+						item.moveY = 0
+						item.animation = false
+					} 
 				}
 				
 			}
