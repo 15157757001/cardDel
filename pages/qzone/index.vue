@@ -82,7 +82,7 @@
 				console.log(item,"点击")
 			},
 			tapDelCard(){
-				this.dataList.splice(0,1)
+				this._del()
 			}
 		}
 		
@@ -151,7 +151,7 @@
 		.right-del{
 			color: #A8A8A8;
 			position:absolute;
-			font-size: 14px;
+			font-size: 15px;
 			right:20upx;
 			top: 10upx;
 		}
