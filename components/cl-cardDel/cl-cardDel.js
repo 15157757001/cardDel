@@ -123,7 +123,9 @@ export default {
 		},
 		//触摸结束判断
 		endJudge(x,y){
-			this._del()
+			if(x!=0||y!=0){
+				this._del()
+			}
 		},
 		//返回card
 		_back(){

@@ -6,7 +6,7 @@
 					class="move-view"
 					v-for="(item,index) in dataList"
 					:key="item._id"
-					:style="{zIndex:`${9999-index}`}"
+					:style="{zIndex:`${99999-item._id}`}"
 					direction="all"
 					:x="item.moveX"
 					:y="item.moveY"
@@ -92,7 +92,7 @@
 			init(){
 				this.number = 3 //card 3
 				this.translate = { x:0,y:8 } //y下移10px
-				this.scale = { x:0.95,y:1 }, //x 缩小0.9
+				this.scale = { x:0.95,y:1 } //x 缩小0.9
 			
 				this.moveRotate = { //设置位移图片旋转角度距离  card中心点 - 指向坐标
 					x:0,

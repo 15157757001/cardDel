@@ -6,7 +6,7 @@
 					class="move-view"
 					v-for="(item,index) in dataList"
 					:key="item._id"
-					:style="{zIndex:`${9999-index}`}"
+					:style="{zIndex:`${99999-item._id}`}"
 					direction="all"
 					:x="item.moveX"
 					:y="item.moveY"
@@ -72,6 +72,14 @@
 </script>
 
 <style lang="scss" scoped>
+	.page{
+		width: 100%;
+		position: absolute;
+		overflow: hidden;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
 	.move-area{
 		position: absolute;
 	}

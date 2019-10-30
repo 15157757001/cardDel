@@ -6,7 +6,7 @@
 					class="move-view"
 					v-for="(item,index) in dataList"
 					:key="item._id"
-					:style="{zIndex:`${9999-index}`}"
+					:style="{zIndex:`${99999-item._id}`}"
 					direction="all"
 					:x="item.moveX"
 					:y="item.moveY"
@@ -23,8 +23,19 @@
 						:style="{transform:index<number?`rotate(${rotate*index}deg) scale(${ 1-(1-scale.x)*index },${ 1-(1-scale.y)*index }) skew(${skew.x*index}deg, ${skew.y*index}deg) translate(${translate.x*index}px, ${translate.y*index}px)`:`rotate(${rotate*(number-1)}deg) scale(${ 1-(1-scale.x)*(number-1) },${ 1-(1-scale.y)*(number-1) }) skew(${skew.x*(number-1)}deg, ${skew.y*(number-1)}deg) translate(${translate.x*(number-1)}px, ${translate.y*(number-1)}px)`,opacity:index<number?`${ 1-(1-opacity)*index }`:`${ 1-(1-opacity)*(number-1) }`}"
 						
 					>
-					{{item.id}}
+						<image class="img" :src="item.src"></image>
+						<view class="content">{{item.name}}</view>
+						<view class="right">
+							<view class="check" @tap="tapCard(item)">查看</view>
+						</view>
+						<view class="right-del" @tap="tapDelCard">x</view>
+						<view class="right-circle"></view>
 					</view>
+			</movable-view>
+			<movable-view id="move" class="move-view" :style="{zIndex:`0`}" disabled>
+				<view class="cardBox" :style="{transform:`scale(0.95,0.95)`}">
+					
+				</view>
 			</movable-view>
 		</movable-area>
 	</view>
@@ -42,29 +53,36 @@
 		methods:{
 			//设置初始参数
 			init(){
-				this.number = 4 //card 4
-				
+				this.number = 2 //card 2
 				//设置第2张卡片transform opacity
-				
-				this.translate = { x:0,y:50 } //y下移10px
-				this.scale = { x:0.9,y:1 }, //x 缩小0.9
-				this.rotate = 10 //旋转deg 
-				this.skew = { x:20,y:0 }, //倾斜px
-				this.opacity = 0.95  //透明度，参数范围 0~1
-				this.moveRotate = { //设置位移图片旋转角度距离  指向坐标 - card中心点 
-					x:0,
-					y:uni.getSystemInfoSync().screenHeight ,
-				}
+				this.rotate = 5 //旋转deg 
+				this.scale = { x:0.95,y:0.95 } //x 缩小0.9
 			},
 			//设置获取数据
 			getData(){
 				let promise = new Promise((resolve,reject)=>{
-					for (var i = 0; i < 10; i++) {
-						this.dataList.push({id:i})
+					let dataGroup = []
+					for (var i = 1; i < 6; i++) {
+						dataGroup.push({
+							src:`../../static/${i}.jpg`,
+							sex:Math.round(Math.random()),
+							address:'杭州(100km)',
+							name:'可爱的小姐姐',
+							constellation:'双鱼座',
+							number:10,
+							old:18
+						})
 					}
+					this.dataList = [...this.dataList,...dataGroup]
 					resolve()
 				}) 
 				return promise
+			},
+			tapCard(item){
+				console.log(item,"点击")
+			},
+			tapDelCard(){
+				this.dataList.splice(0,1)
 			}
 		}
 		
@@ -72,30 +90,71 @@
 </script>
 
 <style lang="scss" scoped>
+	.page{
+		width: 100%;
+		position: absolute;
+		overflow: hidden;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
 	.move-area{
 		position: absolute;
 	}
 	.move-view{
-		width: 300rpx;
-		height: 400rpx;
+		width: 600rpx;
+		height: 200rpx;
 		left: 50%;
 		top: 50%;
-		margin-left: -150rpx;
+		margin-left: -300rpx;
 		margin-top: -500rpx;
 	}
 	.cardBox{
-		
 		background-color: #FFFFFF;
 		position:absolute;
-		width: 300rpx;
-		height: 400rpx;
+		width: 600rpx;
+		height: 200rpx;
 		border-radius: 20rpx;
-		border: 2px solid #e9e7ef;
+		border: 1px solid #F8F8F8;
+		box-shadow: 0upx 0upx 25upx rgba(0,0,0,0.1);
 		display: flex;
-		justify-content: center;
+		justify-content: space-between;
 		align-items: center;
-		font-size: 20px;
-		
+		font-size: 12px;
+		overflow: hidden;
+		padding:0 20upx;
+		.img{
+			height: 140rpx;
+			width: 140rpx;
+			border-radius: 50%;
+		}
+		.right-circle{
+			position:absolute;
+			width: 100upx;
+			height: 100upx;
+			border-radius: 50%;
+			background-color: #FCF3CC;
+			right:30upx;
+			bottom: -60upx;
+		}
+		.check{
+			width: 110upx;
+			height: 70upx;
+			border-radius: 35rpx;
+			background-color:#00CAFC;
+			color: #fff;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-size: 14px;
+		}
+		.right-del{
+			color: #A8A8A8;
+			position:absolute;
+			font-size: 14px;
+			right:20upx;
+			top: 10upx;
+		}
 	}
 	
 	
