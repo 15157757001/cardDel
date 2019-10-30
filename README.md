@@ -15,7 +15,7 @@
 **在index.js中**  
 
 ~~~
-import clCardDel from "@/components/clCardDel/clCardDel";
+import clCardDel from "@/components/cl-cardDel/cl-cardDel";
 mixins:[clCardDel]
 ~~~
 
