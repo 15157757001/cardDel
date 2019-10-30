@@ -102,27 +102,20 @@
 			//获取数据
 			getData(){
 				let promise = new Promise((resolve,reject)=>{
-					uni.request({
-						url: 'https://www.apiopen.top/meituApi?page=3',
-						success: (res) => {
-							let dataGroup = []
-							if(dataGroup.length<5){
-								for (let item of res.data.data) {
-									dataGroup.push({
-										src:item.url,
-										sex:Math.round(Math.random()),
-										address:'杭州(100km)',
-										name:'可爱的小姐姐',
-										constellation:'双鱼座',
-										number:10,
-										old:18
-									})
-								}
-							}
-							this.dataList = [...this.dataList,...dataGroup]
-							resolve()
-						}
-					})
+					let dataGroup = []
+					for (var i = 1; i < 6; i++) {
+						dataGroup.push({
+							src:`../../static/${i}.jpg`,
+							sex:Math.round(Math.random()),
+							address:'杭州(100km)',
+							name:'可爱的小姐姐',
+							constellation:'双鱼座',
+							number:10,
+							old:18
+						})
+					}
+					this.dataList = [...this.dataList,...dataGroup]
+					resolve()
 				}) 
 				return promise
 			},
