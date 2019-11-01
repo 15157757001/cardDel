@@ -80,12 +80,15 @@ export default {
 			this.moveY = newTouces.clientY-oldTouces.clientY
 			this.dataList[0].moveX = this.moveX
 			this.dataList[0].moveY = this.moveY
+			
 			this.dataList[0].animation = false
 			//移动图片旋转角度
 			let angle = this.calcAngleDegrees(this.moveX- this.moveRotate.x,this.moveY- this.moveRotate.y )
 			
 			//移动card动画
 			//this.touchAnimation.translateX(this.moveX).translateY(this.moveY).rotate(angle).step();
+			
+			
 			this.touchAnimation.rotate(angle).step();
 			
 			this.animationData[0] = this.touchAnimation.export()
@@ -242,7 +245,6 @@ export default {
 					if(!item._id){
 						item._id = this.cardId++
 						item.moveX = 0
-						item.moveY = 0
 						item.moveY = 0
 						item.animation = false
 					} 

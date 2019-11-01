@@ -14,11 +14,11 @@
 					v-if="index<=number"
 					:disabled="index!=0"
 					:animation="item.animation"
+					@touchend="touchend"
+					@touchmove="touchMove"
+					@touchstart="touchStart"
 				>
 					<view class="cardBox"
-						@touchend="touchend" 
-						@touchmove="touchMove"
-						@touchstart="touchStart"
 						:animation="animationData[index]"
 						:style="{transform:index<number?`rotate(${rotate*index}deg) scale(${ 1-(1-scale.x)*index },${ 1-(1-scale.y)*index }) skew(${skew.x*index}deg, ${skew.y*index}deg) translate(${translate.x*index}px, ${translate.y*index}px)`:`rotate(${rotate*(number-1)}deg) scale(${ 1-(1-scale.x)*(number-1) },${ 1-(1-scale.y)*(number-1) }) skew(${skew.x*(number-1)}deg, ${skew.y*(number-1)}deg) translate(${translate.x*(number-1)}px, ${translate.y*(number-1)}px)`,opacity:index<number?`${ 1-(1-opacity)*index }`:`${ 1-(1-opacity)*(number-1) }`}"
 						

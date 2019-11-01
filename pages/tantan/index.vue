@@ -1,5 +1,5 @@
 <template>
-	<view class="page" :style="{height:`${sysHeight}px`}">
+	<view class="page" :style="{height:`${sysHeight}px`,width:`${sysWidth}px`}">
 		<movable-area class="move-area" :style="{height:`${3*sysHeight}px`,width:`${3*sysWidth}px`,top:`${-sysHeight}px`,left:`${-sysWidth}px` }">
 				<movable-view
 					id="move"
@@ -15,11 +15,11 @@
 					:disabled="index!=0"
 					:animation="item.animation"
 					@tap="tapCard(item)"
+					@touchend="touchend"
+					@touchmove="touchMove"
+					@touchstart="touchStart"
 				>
 					<view class="cardBox"
-						@touchend="touchend" 
-						@touchmove="touchMove"
-						@touchstart="touchStart"
 						:animation="animationData[index]"
 						:style="{transform:index<number?`rotate(${rotate*index}deg) scale(${ 1-(1-scale.x)*index },${ 1-(1-scale.y)*index }) skew(${skew.x*index}deg, ${skew.y*index}deg) translate(${translate.x*index}px, ${translate.y*index}px)`:`rotate(${rotate*(number-1)}deg) scale(${ 1-(1-scale.x)*(number-1) },${ 1-(1-scale.y)*(number-1) }) skew(${skew.x*(number-1)}deg, ${skew.y*(number-1)}deg) translate(${translate.x*(number-1)}px, ${translate.y*(number-1)}px)`,opacity:index<number?`${ 1-(1-opacity)*index }`:`${ 1-(1-opacity)*(number-1) }`}"
 						
