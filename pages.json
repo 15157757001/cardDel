@@ -35,12 +35,12 @@
 				"text": "基本模板"
 			},
 			{
-				"pagePath": "pages/tantan/index",
-				"text": "探探"
-			},
-			{
 				"pagePath": "pages/qzone/index",
 				"text": "qq空间"
+			},
+			{
+				"pagePath": "pages/tantan/index",
+				"text": "探探"
 			}
 		]
 	}

@@ -3,15 +3,16 @@ export default {
 		return{
 			number:2, //展示卡片数量，同时设置animationData对象
 			moveRotate:{ x:0,y:0 }, //设置位移图片旋转角度距离  card中心点 - 指向坐标
-			delMoveD: uni.getSystemInfoSync().screenHeight*2,//设置删除移动距离
+			delMoveD: uni.getSystemInfoSync().screenHeight,//设置删除移动距离
 			touchMoveD: 100,//设置card移动距离,   card移动距离/touchMoveD = 其他card变化比率
 			rotate:0, //旋转deg 设置第2张卡片transform opacity
 			scale:{ x:1,y:1 }, //缩放
 			skew:{ x:0,y:0 }, //倾斜px
 			translate:{ x:0,y:0 }, //位移px
 			opacity:1,  //透明度，参数范围 0~1
+			type:false, //是否拥有两套代码
 			
-			currentIndex:0, //第一张图片index
+			
 			moveX:0, //记录移动值
 			moveY:0, //
 			oldTouces:{},
@@ -19,12 +20,13 @@ export default {
 			touchAnimation:null,
 			animationData:{}, 
 			dataList:[],
-			delTime:200,
+			delTime:150,
 			cardId:0,
 			x:0,
 			y:0,
 			sysHeight:0,
-			sysWidth:0
+			sysWidth:0,
+			delFlag:false, //app下禁止快速滑动150ms
 		}
 	},
 	created() {
@@ -71,6 +73,10 @@ export default {
 			
 		},
 		touchMove(e) {
+			
+			if(this.delFlag) return
+			
+			
 			let { oldTouces } = this
 			
 			
@@ -86,10 +92,20 @@ export default {
 			let angle = this.calcAngleDegrees(this.moveX- this.moveRotate.x,this.moveY- this.moveRotate.y )
 			
 			//移动card动画
-			//this.touchAnimation.translateX(this.moveX).translateY(this.moveY).rotate(angle).step();
+			if(this.type){
+				//#ifdef APP-PLUS
+				this.touchAnimation.translateX(this.moveX).translateY(this.moveY).rotate(angle).step();
+				//#endif
+				//#ifndef APP-PLUS
+				this.touchAnimation.rotate(angle).step();
+				//#endif
+			}else{
+				this.touchAnimation.rotate(angle).step();
+			}
 			
 			
-			this.touchAnimation.rotate(angle).step();
+			
+			
 			
 			this.animationData[0] = this.touchAnimation.export()
 			
@@ -137,7 +153,17 @@ export default {
 			//移动图片旋转角度
 			let angle = this.calcAngleDegrees(this.moveX- this.moveRotate.x,this.moveY- this.moveRotate.y )
 			//移动card动画
-			//this.delanimation.translateX(-this.moveX-this.moveX/2).translateY(-this.moveY-this.moveY/2).rotate(0).step();
+			
+			if(this.type){
+				//#ifdef APP-PLUS
+				this.delanimation.translateX(-this.moveX/3).translateY(-this.moveY/3).rotate(0).step();
+				//#endif
+
+			}else{
+				
+			}
+			
+			
 			this.moveX = 0
 			this.moveY = 0
 			this.dataList[0].moveX = 0
@@ -175,6 +201,10 @@ export default {
 		},
 		//删除card
 		_del(){
+			//#ifdef APP-PLUS
+			this.delFlag = true
+			//#endif
+			
 			//移动card动画
 			let d = this.moveX*this.moveX + this.moveY*this.moveY
 			let y = this.moveY*this.delMoveD/Math.sqrt(d)
@@ -188,7 +218,7 @@ export default {
 				for (var i = 1; i < this.number; i++) {
 					this.animationData[i] = this.moveAnimation.export()
 				}
-				this.currentIndex ++
+				
 				this.delCard(this.moveX,this.moveY)
 				this.moveX = 0
 				this.moveY = 0
@@ -196,6 +226,11 @@ export default {
 				this.dataList[0].moveY = 0
 				this.dataList.splice(0,1)
 				if(this.dataList.length<=this.number) this.getData()
+				if(this.type) {
+					//#ifdef APP-PLUS
+					this.delFlag = false
+					//#endif
+				}
 			}, this.delTime)
 			
 			//其他card动画
