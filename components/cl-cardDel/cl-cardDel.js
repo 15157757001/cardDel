@@ -201,9 +201,12 @@ export default {
 		},
 		//删除card
 		_del(){
-			//#ifdef APP-PLUS
-			this.delFlag = true
-			//#endif
+			if(this.type) {
+				//#ifdef APP-PLUS
+				this.delFlag = true
+				//#endif
+			}
+			
 			
 			//移动card动画
 			let d = this.moveX*this.moveX + this.moveY*this.moveY
