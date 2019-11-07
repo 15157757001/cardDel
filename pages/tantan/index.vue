@@ -78,7 +78,7 @@
 		},
 		async mounted() {
 			
-			await this.getData()
+			
 		},
 		methods:{
 			//设置初始参数
