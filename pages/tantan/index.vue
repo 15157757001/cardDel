@@ -83,7 +83,7 @@
 			//#ifdef APP-VUE
 			this.sysHeight = this.sysHeight-44
 			//#endif
-			await this.getData()
+			
 		},
 		methods:{
 			tapLove(){
