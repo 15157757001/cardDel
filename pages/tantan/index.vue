@@ -56,12 +56,12 @@
 
 		</view>
 		<!-- #endif -->
-		<view class="love" >
-			<view class="iconfont icon-xinaixin" :style="{fontSize:'45rpx'}"  @tap="tapLove"></view>
+		<!-- <view class="love" >
+			<view class="iconfont icon-xinaixin" :style="{fontSize:'40rpx'}"  @tap="tapLove"></view>
 		</view>
 		<view class="loathe">
-			<view class="iconfont icon-chacha1" :style="{fontSize:'45rpx'}" @tap="tapLoathe"></view>
-		</view>
+			<view class="iconfont icon-chacha1" :style="{fontSize:'40rpx'}" @tap="tapLoathe"></view>
+		</view> -->
 	</view>
 </template>
 
@@ -80,9 +80,9 @@
 			
 		},
 		async mounted() {
-			//#ifdef APP-VUE
-			this.sysHeight = this.sysHeight-44
-			//#endif
+			
+			
+			
 			
 		},
 		methods:{
@@ -217,10 +217,10 @@
 	}
 	.love{
 		position: absolute;
-		width: 90rpx;
-		height: 90rpx;
-		bottom: 20rpx;
-		left: 20rpx;
+		width: 80rpx;
+		height: 80rpx;
+		top: 10rpx;
+		left: 10rpx;
 		border-radius: 50%;
 		background-color: #EA2A36;
 		display: flex;
@@ -231,10 +231,10 @@
 	}
 	.loathe{
 		position: absolute;
-		width: 90rpx;
-		height: 90rpx;
-		bottom: 20rpx;
-		right: 20rpx;
+		width: 80rpx;
+		height: 80rpx;
+		top: 10rpx;
+		right: 10rpx;
 		border-radius: 50%;
 		background-color: #A09E9F;
 		display: flex;
